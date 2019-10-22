@@ -59,12 +59,12 @@ router.post('/', [
       }
     };
 
-    const jswSecret = config.get("jswSecret");
+    const jwtSecret = config.get("jwtSecret");
 
     //JWT Signature
     jwt.sign(
       payload, 
-      jswSecret, {
+      jwtSecret, {
       expiresIn: 360000
     },
     (e, token) => {
