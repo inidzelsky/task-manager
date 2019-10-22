@@ -21,6 +21,7 @@ router.post('/', [
   //Request data validation
   check('email', 'Please, enter a valid email').isEmail(), 
   check('password', 'Please, enter a password with 6 or more characters').isLength({min: 6}),
+  check("name", "Please enter a name").not().isEmpty()
 ], async (req, res) => {
   //Checking errors existance
   const errors = validationResult(req);

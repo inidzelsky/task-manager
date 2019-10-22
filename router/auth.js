@@ -6,7 +6,9 @@ const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("config");
+
 const User = require(path.join(__dirname, "..", "models", "User"));
+const validate = require(path.join(__dirname, "..", "middlewares", "validate"));
 
 const router = express.Router();
 
@@ -69,9 +71,17 @@ router.post(
 //@desc Get logged in user
 //@access Private
 router.get(
-  '/', 
-  (req, res) => {
-    res.send("Log in");
+  '/',
+  validate, 
+  async (req, res) => {
+    try {
+      const { id } = req.user;
+      const user = await User.findById(id).select("-password");
+      res.json(user);
+    } catch (e) {
+      console.error(e.message);
+      res.status(500).json({msg: "Server error occured"});
+    }
   }
 );
 
