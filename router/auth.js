@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 const path = require("path");
 const express = require("express");
@@ -16,73 +16,75 @@ const router = express.Router();
 //@desc Gets token and authenticates user
 //@access Public
 router.post(
-  '/', 
+  "/",
   //Validation functions
-  [check("email", "Please, enter a valid email").isEmail(),
-  check("password", "Please, enter a password with 6 or more characters").isLength({ min: 6 })], 
+  [
+    check("email", "Please, enter a valid email").isEmail(),
+    check(
+      "password",
+      "Please, enter a password with 6 or more characters"
+    ).isLength({ min: 6 })
+  ],
   async (req, res) => {
     //Validation
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({errors: errors.array()});
+      return res.status(400).json({ errors: errors.array() });
     }
 
     //Checking the user existance
     try {
       const { email, password } = req.body;
-      let user = await User.findOne({email});
+      let user = await User.findOne({ email });
       if (!user) {
-        return res.status(400).json({msg: "Invalid credentials"});
+        return res.status(400).json({ msg: "Invalid credentials" });
       }
-    
-    //Checking the password matching
+
+      //Checking the password matching
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
-        return res.status(400).json({msg: "Invalid.credentials"});
+        return res.status(400).json({ msg: "Invalid.credentials" });
       }
-  
-    //Init token  
+
+      //Init token
       const payload = {
         user: {
           id: user.id
         }
       };
-  
+
       const jwtSecret = config.get("jwtSecret");
-  
+
       jwt.sign(
-        payload, 
+        payload,
         jwtSecret,
         {
           expiresIn: 360000
         },
         (e, token) => {
           if (e) throw new Error(e);
-          res.json({token});
+          res.json({ token });
         }
       );
     } catch (e) {
       console.error(e.message);
-      res.status(500).json({msg: "Server error occured"});
+      res.status(500).json({ msg: "Server error occured" });
     }
-});
+  }
+);
 
 //@method GET /api/auth
 //@desc Get logged in user
 //@access Private
-router.get(
-  '/',
-  validate, 
-  async (req, res) => {
-    try {
-      const { id } = req.user;
-      const user = await User.findById(id).select("-password");
-      res.json(user);
-    } catch (e) {
-      console.error(e.message);
-      res.status(500).json({msg: "Server error occured"});
-    }
+router.get("/", validate, async (req, res) => {
+  try {
+    const { id } = req.user;
+    const user = await User.findById(id).select("-password");
+    res.json(user);
+  } catch (e) {
+    console.error(e.message);
+    res.status(500).json({ msg: "Server error occured" });
   }
-);
+});
 
 module.exports = router;
