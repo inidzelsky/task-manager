@@ -1,4 +1,5 @@
 {
+  "PORT": "5000",
   "MongoURI" : "mongodb+srv://inidzelsky:inidz1503@taskmanager-x2ezy.mongodb.net/test?retryWrites=true&w=majority",
   "jwtSecret": "secret"
 }

@@ -1,11 +1,16 @@
 "use strict";
 
+//Basic dependencies
 const path = require("path");
 const express = require("express");
+
+//Secondary dependencies
 const { check, validationResult } = require("express-validator");
+const validate = require(path.join(__dirname, "..", "middlewares", "validate"));
 const User = require(path.join(__dirname, "..", "models", "User"));
 const Task = require(path.join(__dirname, "..", "models", "Task"));
-const validate = require(path.join(__dirname, "..", "middlewares", "validate"));
+
+//Router init
 const router = express.Router();
 
 //@method GET /api/tasks

@@ -1,12 +1,14 @@
 "use strict";
 
+//Basic dependencies
 const path = require("path");
 const express = require("express");
-const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 
+//Secondary dependencies
+const { check, validationResult } = require("express-validator");
 const User = require(path.join(__dirname, "..", "models", "User"));
 const validate = require(path.join(__dirname, "..", "middlewares", "validate"));
 
