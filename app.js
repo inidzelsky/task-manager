@@ -1,15 +1,15 @@
 "use strict";
 
+const path = require("path");
 const express = require("express");
 const config = require("config");
-const connectDB = require("./config/connectDB");
+const connectDB = require(path.join(__dirname, "config", "connectDB"));
 const app = express();
 
-const PORT = config.get("PORT") || 5000;
+const PORT = config.get("PORT") || 4000;
 
-//DB Connection
+//DB connection
 connectDB();
-
 //JSON middleware
 app.use(express.json({ extended: false }));
 
