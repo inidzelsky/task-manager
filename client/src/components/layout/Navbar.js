@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 const Navbar = ({ title, icon }) => {
   const authContext = useContext(AuthContext);
   const { isAuth } = authContext;
-    
+
   return (
     <div className={isAuth ? "navbar bg-success" : "navbar bg-dark"}>
       <h1>

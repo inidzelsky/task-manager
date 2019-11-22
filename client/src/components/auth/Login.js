@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import AlertContext from "../../context/alert/alertContext";
 
 const Login = () => {
+    const alertContext = useContext(AlertContext);
+    const { setAlert } = alertContext;
+
   const [user, setUser] = useState({
     email: "",
     password: ""
@@ -8,8 +12,32 @@ const Login = () => {
 
   const { email, password } = user;
 
+  const checker = () => {
+    const alerts = [];
+
+    if (email === "" || password === "") {
+        alerts.push({type: "danger", msg: "Some fields are empty"});
+    }
+
+    if (password.length < 6) {
+        alerts.push({type: "danger", msg: "Password is 6 symbols min"});
+    }
+
+    return alerts;
+}
+
   const onChange = e => setUser({ ...user, [e.target.name]: e.target.value });
-  const onSubmit = e => console.log(user);
+  const onSubmit = e => {
+    e.preventDefault();
+
+    const alerts = checker();
+    if (alerts.length > 0) {
+        alerts.forEach(alert => setAlert(alert));
+        return;
+    }
+
+    alert("Login success");
+  }
 
   return (
     <div className="form-container">

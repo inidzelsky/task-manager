@@ -5,6 +5,7 @@ import "./App.css";
 
 //Components
 import Navbar from "./components/layout/Navbar";
+import Alerts from "./components/layout/Alerts";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import Home from "./components/pages/Home";
@@ -23,6 +24,7 @@ const App = () => {
           <Router>
             <Fragment>
               <Navbar />
+              <Alerts />
               <div className="container">
                 <Switch>
                   <Route exact path="/" component={Home} />
