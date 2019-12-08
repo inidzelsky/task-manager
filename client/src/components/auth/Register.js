@@ -1,10 +1,66 @@
-import React, { useState, useContext } from "react";
-import AlertContext from "../../context/alert/alertContext";
+import React, { useState, useContext, useEffect } from "react";
 
-const Register = () => {
+import AlertContext from "../../context/alert/alertContext";
+import AuthContext from "../../context/auth/authContext";
+
+const Register = props => {
+  //Contexts init and decomposing
   const alertContext = useContext(AlertContext);
   const { setAlert } = alertContext;
 
+  const authContext = useContext(AuthContext);
+  const { registerUser, error, clearErrors, isAuth } = authContext;
+
+  //Backend error checking
+  useEffect(() => {
+    if (isAuth) {
+      props.history.push("/");
+    }
+
+    if (error) {
+      if (error.type === "Exist") {
+        setAlert({msg: error.msg, type: "danger", icon: "fas fa-user-times"});
+      } else {
+        setAlert({msg: error.msg, type: "danger"});
+      }
+
+      clearErrors();
+    } 
+    //eslint-disable-next-line
+  }, [error, isAuth, props.history]);
+
+  //Frontend error checking
+  const checker = () => {
+    const alerts = [];
+
+    if (email === "" || name === "" || password === "") {
+      alerts.push({
+        type: "danger",
+        msg: "Some fields are empty",
+        icon: "fab fa-creative-commons-zero"
+      });
+    }
+
+    if (password.length < 6) {
+      alerts.push({
+        type: "danger",
+        msg: "Password is 6 symbols min",
+        icon: "fas fa-less-than"
+      });
+    }
+
+    if (password !== passwordc) {
+      alerts.push({
+        type: "danger",
+        msg: "Passwords are not equal",
+        icon: "fas fa-key"
+      });
+    }
+
+    return alerts;
+  };
+
+  //User state init
   const [user, setUser] = useState({
     email: "",
     name: "",
@@ -14,27 +70,7 @@ const Register = () => {
 
   const { email, name, password, passwordc } = user;
 
-  const checker = () => {
-    const alerts = [];
-
-    if (email === "" || name === "" || password === "") {
-      alerts.push({ type: "danger", msg: "Some fields are empty" });
-    }
-
-    if (password.length < 6) {
-      alerts.push({
-        type: "danger",
-        msg: "Password is 6 symbols min"
-      });
-    }
-
-    if (password !== passwordc) {
-      alerts.push({ type: "danger", msg: "Passwords are not equal" });
-    }
-
-    return alerts;
-  };
-
+  //Form handlers
   const onChange = e => setUser({ ...user, [e.target.name]: e.target.value });
   const onSubmit = e => {
     e.preventDefault();
@@ -45,7 +81,7 @@ const Register = () => {
       return;
     }
 
-    alert("Account registered!");
+    registerUser({email, name, password});
   };
 
   return (

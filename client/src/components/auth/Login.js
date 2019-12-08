@@ -1,10 +1,52 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import AlertContext from "../../context/alert/alertContext";
+import AuthContext from "../../context/auth/authContext";
 
-const Login = () => {
-    const alertContext = useContext(AlertContext);
-    const { setAlert } = alertContext;
+const Login = props => {
+  //Context init
+  const alertContext = useContext(AlertContext);
+  const { setAlert } = alertContext;
 
+  const authContext = useContext(AuthContext);
+  const { error, clearErrors, loginUser, isAuth } = authContext;
+
+  //Home page redirection and backend errors checking
+  useEffect(() => {
+    if (isAuth) {
+      props.history.push("/");
+    }
+
+    if (error) {
+      setAlert({type: "danger", msg: error.msg});
+      clearErrors();
+    }
+    //eslint-disable-next-line
+  }, [error, isAuth, props.history]);
+
+  //Frontend errors checking
+  const checker = () => {
+    const alerts = [];
+
+    if (email === "" || password === "") {
+      alerts.push({
+        type: "danger",
+        msg: "Some fields are empty",
+        icon: "fab fa-creative-commons-zero"
+      });
+    }
+
+    if (password.length < 6) {
+      alerts.push({
+        type: "danger",
+        msg: "Password is 6 symbols min",
+        icon: "fas fa-less-than"
+      });
+    }
+
+    return alerts;
+  };
+
+  //User state init
   const [user, setUser] = useState({
     email: "",
     password: ""
@@ -12,32 +54,19 @@ const Login = () => {
 
   const { email, password } = user;
 
-  const checker = () => {
-    const alerts = [];
-
-    if (email === "" || password === "") {
-        alerts.push({type: "danger", msg: "Some fields are empty"});
-    }
-
-    if (password.length < 6) {
-        alerts.push({type: "danger", msg: "Password is 6 symbols min"});
-    }
-
-    return alerts;
-}
-
+  //Form handlers
   const onChange = e => setUser({ ...user, [e.target.name]: e.target.value });
   const onSubmit = e => {
     e.preventDefault();
 
     const alerts = checker();
     if (alerts.length > 0) {
-        alerts.forEach(alert => setAlert(alert));
-        return;
+      alerts.forEach(alert => setAlert(alert));
+      return;
     }
 
-    alert("Login success");
-  }
+    loginUser({email, password});
+  };
 
   return (
     <div className="form-container">

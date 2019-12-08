@@ -25,7 +25,7 @@ const registerPost = async (req, res) => {
     if (user) {
       return res
         .status(400)
-        .json({ msg: `User with the email: ${email} already exists` });
+        .json({ msg: `User with the email: ${email} already exists`, type: "Exist" });
     }
 
     //Creating a User document

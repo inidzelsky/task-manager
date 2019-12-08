@@ -15,7 +15,8 @@ const Alerts = () => {
               className={`alert alert-${alert.type}`}
               style={{ margin: "20px" }}
             >
-              <i className="fas fa-info-circle" />
+              <i className={alert.icon ? alert.icon : "fas fa-info-circle"} />
+              {" "}
               {alert.msg}
             </div>
           </CSSTransition>
