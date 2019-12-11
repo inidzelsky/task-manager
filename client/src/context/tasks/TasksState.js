@@ -34,14 +34,14 @@ const TasksState = props => {
   const getTasks = async () => {
     try {
       const res = await axios.get("/api/tasks", id);
-      dispatch({type: GET_TASKS, payload: res.data.tasks});
+      dispatch({ type: GET_TASKS, payload: res.data.tasks });
     } catch (e) {
-      
+      dispatch({ type: TASK_ERROR, payload: e.response.data });
     }
-  }
+  };
 
   //ADD_TASK
-  const addTask = async (task) => {
+  const addTask = async task => {
     const config = {
       headers: {
         "Content-Type": "application/json"
@@ -57,17 +57,17 @@ const TasksState = props => {
   };
 
   //REMOVE_TASK
-  const removeTask = async (id) => {
+  const removeTask = async id => {
     try {
       await axios.delete(`/api/tasks/${id}`);
       dispatch({ type: REMOVE_TASK, payload: id });
-    } catch(e) {
+    } catch (e) {
       dispatch({ type: TASK_ERROR, payload: e.response.data });
     }
   };
 
   //UPDATE_TASK
-  const updateTask = async (task) => {
+  const updateTask = async task => {
     try {
       const res = await axios.put(`/api/tasks/${task._id}`, task);
       dispatch({ type: UPDATE_TASK, payload: res.data });
@@ -89,7 +89,7 @@ const TasksState = props => {
   //CLEAR_STATE
   const clearState = () => {
     dispatch({ type: CLEAR_STATE });
-  }
+  };
 
   return (
     <TasksContext.Provider

@@ -17,7 +17,7 @@ import TasksState from "./context/tasks/TasksState";
 import AuthState from "./context/auth/AuthState";
 import AlertState from "./context/alert/AlertState";
 
-const App = () => {  
+const App = () => {
   return (
     <AuthState>
       <TasksState>

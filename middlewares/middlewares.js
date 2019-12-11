@@ -25,7 +25,7 @@ const registerPost = async (req, res) => {
     if (user) {
       return res
         .status(400)
-        .json({ msg: `User with the email: ${email} already exists`, type: "Exist" });
+        .json({ msg: `User with the email: ${email} already exists`});
     }
 
     //Creating a User document
@@ -89,7 +89,7 @@ const authPost = async (req, res) => {
     //Checking the password matching
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ msg: "Invalid.credentials" });
+      return res.status(400).json({ msg: "Invalid credentials" });
     }
 
     //Init token
@@ -173,8 +173,9 @@ const tasksPut = async (req, res) => {
 
     if (userid !== task.user.toString())
       res.status(400).json({ msg: "Not authorised" });
-    const { title } = req.body;
-    const changeField = { title };
+
+    const { title, done } = req.body;
+    const changeField = { title, done };
 
     const newTask = await Task.findByIdAndUpdate(
       req.params.id,
