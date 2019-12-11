@@ -7,28 +7,28 @@ const TasksForm = () => {
   const { addTask, current, removeCurrent, updateTask } = tasksContext;
 
   //Creating a state
-  const [task, setTask] = useState({
+  const initialState = {
     title: "",
     done: false,
     date: Date.now
-  });
+  };
+
+  const [task, setTask] = useState(initialState);
 
   const { title } = task;
 
   //Using useEffect hook
   useEffect(() => {
-    if (current) {
-      setTask(current);
-    } else {
-      setTask({
-        title: "",
-        done: false,
-        date: Date.now
-      });
-    }
+    if (current) setTask(current);
+    else setTask(initialState);
+    
+    //eslint-disable-next-line
   }, [current]);
 
-  const removeAll = () => removeCurrent();
+  const clearForm = () => {
+    removeCurrent();
+    if (task) setTask(initialState);
+  };
   const onChange = e => setTask({ ...task, [e.target.name]: e.target.value });
   const onSubmit = e => {
     e.preventDefault();
@@ -37,7 +37,7 @@ const TasksForm = () => {
 
     if (current) {
       updateTask(task);
-      removeAll();
+      clearForm();
     } else {
       addTask(task);
     }
@@ -69,7 +69,7 @@ const TasksForm = () => {
           type="button"
           value="Clear"
           className="btn btn-light btn-blocks"
-          onClick={removeAll}
+          onClick={clearForm}
         />
       </div>
     </form>

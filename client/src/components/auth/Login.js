@@ -8,10 +8,12 @@ const Login = props => {
   const { setAlert } = alertContext;
 
   const authContext = useContext(AuthContext);
-  const { error, clearErrors, loginUser, isAuth } = authContext;
+  const { error, clearErrors, loginUser, isAuth, loadUser } = authContext;
 
   //Home page redirection and backend errors checking
   useEffect(() => {
+    loadUser();
+    
     if (isAuth) {
       props.history.push("/");
     }

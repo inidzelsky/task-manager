@@ -3,26 +3,36 @@ import {
   REMOVE_TASK,
   UPDATE_TASK,
   SET_CURRENT,
-  REMOVE_CURRENT
+  REMOVE_CURRENT,
+  GET_TASKS,
+  CLEAR_STATE,
+  TASK_ERROR
 } from "../types";
 
 export default (state, action) => {
   switch (action.type) {
+    case GET_TASKS:
+      return {
+        ...state,
+        tasks: [...action.payload],
+        loading: false
+      };
+
     case ADD_TASK:
-      return { ...state, tasks: [...state.tasks, action.payload] };
+      return { ...state, tasks: [action.payload, ...state.tasks] };
 
     case UPDATE_TASK:
       return {
         ...state,
         tasks: state.tasks.map(task =>
-          task.id === action.payload.id ? action.payload : task
+          task._id === action.payload._id ? action.payload : task
         )
       };
 
     case REMOVE_TASK:
       return {
         ...state,
-        tasks: state.tasks.filter(task => task.id !== action.payload)
+        tasks: state.tasks.filter(task => task._id !== action.payload)
       };
 
     case SET_CURRENT:
@@ -30,6 +40,18 @@ export default (state, action) => {
 
     case REMOVE_CURRENT:
       return { ...state, current: null };
+
+    case CLEAR_STATE:
+      return {
+        ...state,
+        tasks: null,
+        current: null,
+        erros: null,
+        loading: true
+      };
+
+    case TASK_ERROR:
+      return { ...state, error: action.payload };
 
     default:
       return state;

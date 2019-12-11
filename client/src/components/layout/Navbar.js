@@ -1,6 +1,7 @@
 //Basic dependencies
 import React, { useContext, Fragment } from "react";
 import AuthContext from "../../context/auth/authContext";
+import TasksContext from "../../context/tasks/tasksContext";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
@@ -8,8 +9,12 @@ const Navbar = ({ title, icon }) => {
   const authContext = useContext(AuthContext);
   const { isAuth, user, logout } = authContext;
 
+  const tasksContext = useContext(TasksContext);
+  const { clearState } = tasksContext;
+
   const onLogout = () => {
     logout();
+    clearState();
   }
 
   const authList = (
@@ -33,7 +38,7 @@ const Navbar = ({ title, icon }) => {
   )
 
   return (
-    <div className={isAuth ? "navbar bg-success" : "navbar bg-dark"}>
+    <div className="navbar bg-success">
       <h1>
         <i className={icon} /> {title}
       </h1>
