@@ -14,6 +14,7 @@ const TasksForm = () => {
   };
 
   const [task, setTask] = useState(initialState);
+
   const { title } = task;
 
   //Using useEffect hook

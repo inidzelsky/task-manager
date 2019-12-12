@@ -25,8 +25,8 @@ const TasksItem = ({ task }) => {
   };
 
   const onCompleted = () => {
-    updateTask({ _id, title, done: !completed });
     setCompleted(!completed);
+    updateTask({ ...task, done: completed });
   };
 
   return (

@@ -1,28 +1,16 @@
 import React, { Fragment, useContext, useEffect } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import uuid from "uuid";
 import TasksContext from "../../context/tasks/tasksContext";
-import AlertContext from "../../context/alert/alertContext";
 import Alerts from "../layout/Alerts";
 import TasksItem from "./TasksItem";
 import Spinner from "../layout/Spinner";
 
 const Tasks = () => {
   const tasksContext = useContext(TasksContext);
-  const { tasks, getTasks, loading, error } = tasksContext;
-
-  const alertContext = useContext(AlertContext);
-  const { setAlert } = alertContext;
+  const { tasks, getTasks, loading } = tasksContext;
 
   useEffect(() => {
     getTasks();
-
-    if(error)
-      setAlert({
-        type: "danger",
-        msg: error,
-        id: uuid.v4()
-      });
     //eslint-disable-next-line
   }, []);
 

@@ -39,8 +39,8 @@ const AuthState = props => {
       dispatch({ type: LOGIN_SUCCESS, payload: res.data });
 
       loadUser();
-    } catch (e) {
-      dispatch({ type: LOGIN_FAILURE, payload: e.response.msg });
+    } catch (err) {
+      dispatch({ type: LOGIN_FAILURE, payload: err.response.data });
     }
   };
 
@@ -57,8 +57,8 @@ const AuthState = props => {
       dispatch({ type: REGISTER_SUCCESS, payload: res.data });
 
       loadUser();
-    } catch (e) {
-      dispatch({ type: REGISTER_FAILURE, payload: e.response.msg });
+    } catch (err) {
+      dispatch({ type: REGISTER_FAILURE, payload: err.response.data });
     }
   };
 
@@ -73,8 +73,8 @@ const AuthState = props => {
     try {
       const res = await axios.get("/api/auth");
       dispatch({ type: LOAD_USER, payload: res.data });
-    } catch (e) {
-      dispatch({ type: LOAD_FAILURE, payload: e.response.msg });
+    } catch (error) {
+      dispatch({ type: LOAD_FAILURE });
     }
   };
 

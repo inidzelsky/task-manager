@@ -18,9 +18,14 @@ const Register = props => {
     }
 
     if (error) {
-      setAlert({ msg: error.msg, type: "danger" });
+      if (error.type === "Exist") {
+        setAlert({msg: error.msg, type: "danger", icon: "fas fa-user-times"});
+      } else {
+        setAlert({msg: error.msg, type: "danger"});
+      }
+
       clearErrors();
-    }
+    } 
     //eslint-disable-next-line
   }, [error, isAuth, props.history]);
 
@@ -76,7 +81,7 @@ const Register = props => {
       return;
     }
 
-    registerUser({ email, name, password });
+    registerUser({email, name, password});
   };
 
   return (
