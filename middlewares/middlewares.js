@@ -173,8 +173,8 @@ const tasksPut = async (req, res) => {
 
     if (userid !== task.user.toString())
       res.status(400).json({ msg: "Not authorised" });
-    const { title } = req.body;
-    const changeField = { title };
+    const { title, done } = req.body;
+    const changeField = { title, done };
 
     const newTask = await Task.findByIdAndUpdate(
       req.params.id,
